@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: consumer
+
+eureka:
+  client:
+    service-url: # EurekaServer地址
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5 # 每间隔5秒钟向注册中心拉取一次最新服务列表
+    fetch-registry: true       # 默认值值为true，所以可以省略
+    register-with-eureka: true # 默认值值为true，所以可以省略
+  instance:
+    prefer-ip-address: true # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
+    ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
+    instance-id: ${spring.application.name}:${server.port}
+
+user-server:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 将ribbon的默认轮询RoundRule规则修改为随机
+    ConnectTimeout: 250 # 连接超时时间(ms)
+    ReadTimeout: 1000 # 通信超时时间(ms)
+
+feign:
+  hystrix:
+    enabled: true # 开启Feign的熔断功能
+
+logging:
+  level:
+    cn.itcast.consumer: debug

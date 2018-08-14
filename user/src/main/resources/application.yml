@@ -1,0 +1,37 @@
+server:
+  port: 8082
+#spring配置
+spring:
+#数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mybatis?useSSL=false&serverTimezone=UTC
+    username: root
+    password: LDM369254
+  application:
+    name: user-server
+#mybatis配置
+mybatis:
+#设置mybatis别名扫名
+  type-aliases-package: cn.itcast.user.pojo
+#mapper.xml文件配置，如果没有映射文件，请注释掉
+  #mapper-locations: classpath:mappers/**/*.xml
+
+# 设置com.leyou包的日志级别
+logging:
+  level:
+    com.leyou:
+      debug
+
+eureka:
+  client:
+    service-url: # EurekaServer地址
+      defaultZone: http://127.0.0.1:10086/eureka
+    fetch-registry: true       # 默认值值为true，所以可以省略
+    register-with-eureka: true # 默认值值为true，所以可以省略
+  instance:
+    prefer-ip-address: true # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
+    ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
+    lease-expiration-duration-in-seconds: 10 # 10秒钟后服务过期
+    lease-renewal-interval-in-seconds: 5 # 每间隔5秒钟心跳一次(重新续约)
+    instance-id: ${spring.application.name}:${server.port}
